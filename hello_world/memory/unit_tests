@@ -1,0 +1,56 @@
+To generate tests based on the above specification, we will use the pytest library. We will create a test file for each class and function in the specification.
+
+1. Test for Greeting class (test_greeting.py)
+   - Test the constructor and display method.
+
+2. Test for HelloWorld class (test_hello_world.py)
+   - Test the constructor and display method.
+
+3. Test for main function (test_main.py)
+   - Test the main function execution.
+
+Here are the test files:
+
+```test_greeting.py
+import pytest
+from greeting import Greeting
+
+def test_greeting_constructor():
+    greeting = Greeting("English", "Hello, World!")
+    assert greeting.language == "English"
+    assert greeting.text == "Hello, World!"
+
+def test_greeting_display(capsys):
+    greeting = Greeting("English", "Hello, World!")
+    greeting.display()
+    captured = capsys.readouterr()
+    assert captured.out == "Hello, World!\n"
+```
+
+```test_hello_world.py
+import pytest
+from hello_world import HelloWorld
+
+def test_hello_world_constructor():
+    hello_world = HelloWorld()
+    assert hello_world.language == "English"
+    assert hello_world.text == "Hello, World!"
+
+def test_hello_world_display(capsys):
+    hello_world = HelloWorld()
+    hello_world.display()
+    captured = capsys.readouterr()
+    assert captured.out == "Hello, World!\n"
+```
+
+```test_main.py
+import pytest
+from main import main
+
+def test_main_execution(capsys):
+    main()
+    captured = capsys.readouterr()
+    assert captured.out == "Hello, World!\n"
+```
+
+These tests cover the functionality described in the specification. They test the constructors and display methods of the Greeting and HelloWorld classes, as well as the main function execution.

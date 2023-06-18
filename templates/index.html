@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GPT Engineer Interface</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .box {
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      overflow: auto;
+    }
+
+    .resizable-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2 class="mt-4 mb-4"><img src="static/img/logo.jpg" alt="Logo" width="100">  GPT Engineer Interface</h2>
+
+  <div class="box">
+    <form action="/" method="post">
+      <div class="form-group">
+        <label for="project_name">Project Name:</label>
+        <input type="text" class="form-control" id="project_name" name="project_name" value="Your project_name">
+      </div>
+      <div class="form-group">
+        <label for="main_prompt">Main Prompt:</label>
+        <textarea class="form-control resizable-textarea" id="main_prompt" name="main_prompt" rows="5">Your main_prompt</textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+
+</div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

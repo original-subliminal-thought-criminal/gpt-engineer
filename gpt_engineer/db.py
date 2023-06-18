@@ -9,6 +9,7 @@ class DB:
     def __init__(self, path):
         self.path = Path(path).absolute()
         os.makedirs(self.path, exist_ok=True)
+        os.chmod(self.path, 0o777)
 
     def __getitem__(self, key):
         with open(self.path / key, encoding='utf-8') as f:
@@ -20,6 +21,7 @@ class DB:
         with open(self.path / key, 'w', encoding='utf-8') as f:
             f.write(val)
 
+        os.chmod(self.path / key, 0o666)
     def __contains__(self, key):
         return (self.path / key).exists()
 
