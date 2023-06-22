@@ -1,0 +1,37 @@
+Specification for Masscan Wrapper Python Module
+
+Program Purpose:
+The program should act as a Python wrapper for the masscan tool, allowing users to interact with masscan using Python code. The wrapper should support all major masscan features such as setting rate, exclusion file, hello-string, and various outputs. The module should be installable and come with a README file documenting how to install it, how to use it, and marking that it is a module made by "Darpanet". The code should be PEP compliant and include flake8 for linting. All functions should have descriptive docstrings.
+
+Core Classes, Functions, and Methods:
+1. MasscanWrapper (class)
+   - Purpose: Main class for interacting with masscan tool.
+   - Methods:
+     - __init__(self, rate: int, exclusion_file: str, hello_string: str, output_format: str)
+     - set_rate(self, rate: int)
+     - set_exclusion_file(self, exclusion_file: str)
+     - set_hello_string(self, hello_string: str)
+     - set_output_format(self, output_format: str)
+     - run_scan(self, target: str, ports: str) -> Dict[str, Any]
+
+2. parse_output (function)
+   - Purpose: Parse masscan output and return a dictionary with the results.
+   - Arguments:
+     - output: str
+   - Returns: Dict[str, Any]
+
+Non-standard Dependencies:
+- masscan: The masscan tool should be installed on the user's system.
+
+File Structure:
+masscan_wrapper/
+|-- masscan_wrapper/
+|   |-- __init__.py
+|   |-- masscan_wrapper.py
+|-- tests/
+|   |-- __init__.py
+|   |-- test_masscan_wrapper.py
+|-- README.md
+|-- setup.py
+|-- .flake8
+|-- .gitignore

@@ -17,7 +17,11 @@ class DB:
 
     def __setitem__(self, key, val):
         Path(self.path / key).absolute().parent.mkdir(parents=True, exist_ok=True)
-
+        
+        if key == "":
+            print(f"key: {key} - is empty skipping")
+            return
+        print(f"Writing to {self.path / key}")
         with open(self.path / key, 'w', encoding='utf-8') as f:
             f.write(val)
 

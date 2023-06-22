@@ -1,0 +1,160 @@
+```setup.py
+from setuptools import setup, find_packages
+
+setup(
+    name="masscan-wrapper",
+    version="0.1.0",
+    packages=find_packages(),
+    install_requires=[],
+    extras_require={
+        "dev": [
+            "pytest",
+            "flake8",
+        ],
+    },
+    entry_points={},
+)
+```
+
+```README.md
+# Masscan Wrapper
+
+A Python wrapper for the masscan tool, made by Darpanet.
+
+## Installation
+
+1. Install masscan on your system.
+2. Clone this repository and navigate to the root directory.
+3. Run `pip install .` to install the masscan-wrapper module.
+
+## Usage
+
+```python
+from masscan_wrapper import MasscanWrapper
+
+wrapper = MasscanWrapper(rate=1000, exclusion_file="exclude.txt", hello_string="Hello", output_format="json")
+results = wrapper.run_scan(target="127.0.0.1", ports="80,443")
+print(results)
+```
+
+## Development
+
+1. Install development dependencies with `pip install -e .[dev]`.
+2. Run tests with `pytest`.
+3. Check code style with `flake8`.
+```
+
+```masscan_wrapper/__init__.py
+from .masscan_wrapper import MasscanWrapper
+```
+
+```masscan_wrapper/masscan_wrapper.py
+import subprocess
+from typing import Dict, Any
+
+
+class MasscanWrapper:
+    def __init__(self, rate: int, exclusion_file: str, hello_string: str, output_format: str):
+        self.rate = rate
+        self.exclusion_file = exclusion_file
+        self.hello_string = hello_string
+        self.output_format = output_format
+
+    def set_rate(self, rate: int):
+        self.rate = rate
+
+    def set_exclusion_file(self, exclusion_file: str):
+        self.exclusion_file = exclusion_file
+
+    def set_hello_string(self, hello_string: str):
+        self.hello_string = hello_string
+
+    def set_output_format(self, output_format: str):
+        self.output_format = output_format
+
+    def run_scan(self, target: str, ports: str) -> Dict[str, Any]:
+        cmd = [
+            "masscan",
+            "-p", ports,
+            "--rate", str(self.rate),
+            "--excludefile", self.exclusion_file,
+            "--hello-string", self.hello_string,
+            "--output-format", self.output_format,
+            target,
+        ]
+        result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        return parse_output(result.stdout)
+
+
+def parse_output(output: str) -> Dict[str, Any]:
+    if output_format == "json":
+        return json.loads(output)
+    elif output_format == "xml":
+        # Implement XML parsing here
+        pass
+    else:
+        raise ValueError("Unsupported output format")
+```
+
+```tests/__init__.py
+```
+
+```tests/test_masscan_wrapper.py
+import pytest
+from masscan_wrapper.masscan_wrapper import MasscanWrapper, parse_output
+
+def test_masscan_wrapper_init():
+    wrapper = MasscanWrapper(rate=1000, exclusion_file="exclude.txt", hello_string="Hello", output_format="json")
+    assert wrapper.rate == 1000
+    assert wrapper.exclusion_file == "exclude.txt"
+    assert wrapper.hello_string == "Hello"
+    assert wrapper.output_format == "json"
+
+def test_set_rate():
+    wrapper = MasscanWrapper(rate=1000)
+    wrapper.set_rate(2000)
+    assert wrapper.rate == 2000
+
+def test_set_exclusion_file():
+    wrapper = MasscanWrapper(exclusion_file="exclude.txt")
+    wrapper.set_exclusion_file("new_exclude.txt")
+    assert wrapper.exclusion_file == "new_exclude.txt"
+
+def test_set_hello_string():
+    wrapper = MasscanWrapper(hello_string="Hello")
+    wrapper.set_hello_string("New Hello")
+    assert wrapper.hello_string == "New Hello"
+
+def test_set_output_format():
+    wrapper = MasscanWrapper(output_format="json")
+    wrapper.set_output_format("xml")
+    assert wrapper.output_format == "xml"
+
+def test_run_scan(mocker):
+    wrapper = MasscanWrapper(rate=1000, exclusion_file="exclude.txt", hello_string="Hello", output_format="json")
+    mocker.patch("masscan_wrapper.masscan_wrapper.subprocess.run")
+    wrapper.run_scan(target="127.0.0.1", ports="80,443")
+    wrapper.subprocess.run.assert_called_once()
+
+def test_parse_output():
+    sample_output = '{"ip": "127.0.0.1", "ports": [{"port": 80, "proto": "tcp", "status": "open"}]}'
+    parsed_output = parse_output(sample_output)
+    assert parsed_output["ip"] == "127.0.0.1"
+    assert parsed_output["ports"][0]["port"] == 80
+    assert parsed_output["ports"][0]["proto"] == "tcp"
+    assert parsed_output["ports"][0]["status"] == "open"
+```
+
+```flake8
+[flake8]
+max-line-length = 88
+```
+
+```gitignore
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+```

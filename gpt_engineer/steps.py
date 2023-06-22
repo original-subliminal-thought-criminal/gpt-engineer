@@ -136,21 +136,37 @@ def execute_workspace(ai: AI, dbs: DBs):
     return messages
 
 
-def execute_entrypoint(ai, dbs):
+def execute_entrypoint(ai, dbs, request=None):
     command = dbs.workspace["run.sh"]
 
-    print("Do you want to execute this code?")
-    print()
-    print(command)
-    print()
-    print('If yes, press enter. If no, type "no"')
-    print()
-    if input() == "no":
-        print("Ok, not executing the code.")
-    print("Executing the code...")
-    print()
-    subprocess.run("bash run.sh", shell=True, cwd=dbs.workspace.path)
-    return []
+    print(f"Request: {request}")
+    if request:
+        # Check if the user provided a response in the request
+        user_response = request.form.get(execute_entrypoint.__name__)
+        print(f"User response: {user_response}")
+        if user_response:
+            # If the user has provided a response, add it to the messages list
+            messages = [{"role": "user", "content": user_response}]
+        else:
+            # If no user response is available, prompt the user for a response
+            messages = [{"role": "system", "content": "Please provide your response:"}]
+    else:
+        # If there's no request object, use the regular code execution flow
+        #print("Do you want to execute this code?")
+        #print()
+        #print(command)
+        #print()
+        #print('If yes, press enter. If no, type "no"')
+        #print()
+        #if input() == "no":
+        #    print("Ok, not executing the code.")
+        #print("Executing the code...")
+        #print()
+        #subprocess.run("bash run.sh", shell=True, cwd=dbs.workspace.path)
+        pass
+
+    return
+
 
 
 def gen_entrypoint(ai, dbs):

@@ -27,11 +27,15 @@
     <form action="/" method="post">
       <div class="form-group">
         <label for="project_name">Project Name:</label>
-        <input type="text" class="form-control" id="project_name" name="project_name" value="Your project_name">
+        <input type="text" class="form-control" id="project_name" name="project_name" value="{{ project_name }}">
       </div>
       <div class="form-group">
         <label for="main_prompt">Main Prompt:</label>
-        <textarea class="form-control resizable-textarea" id="main_prompt" name="main_prompt" rows="5">Your main_prompt</textarea>
+        <textarea class="form-control resizable-textarea" id="main_prompt" name="main_prompt" rows="5">{{ previous_response }}</textarea>
+      </div>
+      <div class="form-group">
+        <label for="execute_entrypoint">Execute Entry Point (test run after building):</label>
+        <input type="text" class="form-control" id="execute_entrypoint" name="execute_entrypoint">
       </div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
